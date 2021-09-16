@@ -1,44 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Platformer.Gameplay;
+using static Platformer.Core.Simulation;
+using Platformer.Model;
+using Platformer.Core;
 
 namespace Platformer.Mechanics
 {
-    
     /// <summary>
-    /// This class is used to implement all control from the user to the main character
+    /// This is the main class used to implement control of the player.
+    /// It is a superset of the AnimationController class, but is inlined to allow for any kind of customisation.
     /// </summary>
     public class PlayerController : KinematicObject
     {
-        // -- CATCHE --
-        /*internal new*/ public Collider2D collider2d;
-        /*internal new*/ public AudioSource audioSource;
-        //public Health health;
-        
-        // Player's max horizontal speed
-        public float maxSpeed = 7;
-        // Player's initial velocity at the start of a jump
-        public float jumpTakeOffSpeed = 7;
-
-        // Player's basic audio clips from actions
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
-        // Player's jumping actions
+        /// <summary>
+        /// Max horizontal speed of the player.
+        /// </summary>
+        public float maxSpeed = 7;
+        /// <summary>
+        /// Initial jump velocity at the start of a jump.
+        /// </summary>
+        public float jumpTakeOffSpeed = 7;
+
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        bool jump;
-
-        // Player's movement controls
+        /*internal new*/
+        public Collider2D collider2d;
+        /*internal new*/
+        public AudioSource audioSource;
+        //public Health health;
         public bool controlEnabled = true;
+
+        bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
         internal Animator animator;
-        // readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
-        // TODO: Test Bounds
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
@@ -54,14 +57,13 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
-                // 
                 move.x = Input.GetAxis("Horizontal");
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
                     jumpState = JumpState.PrepareToJump;
                 else if (Input.GetButtonUp("Jump"))
                 {
                     stopJump = true;
-                    //Schedule<PlayerStopJump>().player = this;
+                    Schedule<PlayerStopJump>().player = this;
                 }
             }
             else
@@ -85,14 +87,14 @@ namespace Platformer.Mechanics
                 case JumpState.Jumping:
                     if (!IsGrounded)
                     {
-                        //Schedule<PlayerJumped>().player = this;
+                        Schedule<PlayerJumped>().player = this;
                         jumpState = JumpState.InFlight;
                     }
                     break;
                 case JumpState.InFlight:
                     if (IsGrounded)
                     {
-                        //Schedule<PlayerLanded>().player = this;
+                        Schedule<PlayerLanded>().player = this;
                         jumpState = JumpState.Landed;
                     }
                     break;
@@ -106,7 +108,7 @@ namespace Platformer.Mechanics
         {
             if (jump && IsGrounded)
             {
-                //velocity.y = jumpTakeOffSpeed * model.jumpModifier;
+                velocity.y = jumpTakeOffSpeed * model.jumpModifier;
                 jump = false;
             }
             else if (stopJump)
@@ -114,7 +116,7 @@ namespace Platformer.Mechanics
                 stopJump = false;
                 if (velocity.y > 0)
                 {
-                    //velocity.y = velocity.y * model.jumpDeceleration;
+                    velocity.y = velocity.y * model.jumpDeceleration;
                 }
             }
 
@@ -123,8 +125,8 @@ namespace Platformer.Mechanics
             else if (move.x < -0.01f)
                 spriteRenderer.flipX = true;
 
-            animator.SetBool("grounded", IsGrounded);
-            animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
+            //animator.SetBool("grounded", IsGrounded);
+            //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
         }
