@@ -14,28 +14,30 @@ namespace Platformer.Mechanics
     /// </summary>
     public class PlayerController : KinematicObject
     {
+        // -- CATCHE --
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
+        /*internal new*/ public Collider2D collider2d;
+        /*internal new*/ public AudioSource audioSource;
 
-        /// <summary>
-        /// Max horizontal speed of the player.
-        /// </summary>
+        // -- ACTIONS --
+        private string horizButton = "Horizontal";
+        private string JumpButton = "Jump";
+        // private string ActionButton = "Action";
+
+        // Max horizontal speed of the player.
         public float maxSpeed = 7;
-        /// <summary>
-        /// Initial jump velocity at the start of a jump.
-        /// </summary>
-        public float jumpTakeOffSpeed = 7;
 
+        // Initial jump velocity at the start of a jump.
+        public float jumpTakeOffSpeed = 7;
+        public float holdjumpTakeOffSpeed = 9;
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        /*internal new*/
-        public Collider2D collider2d;
-        /*internal new*/
-        public AudioSource audioSource;
+
+        // Player's movement vars
         //public Health health;
         public bool controlEnabled = true;
-
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -57,10 +59,10 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
-                move.x = Input.GetAxis("Horizontal");
-                if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
+                move.x = Input.GetAxis(horizButton);
+                if (jumpState == JumpState.Grounded && Input.GetButtonDown(JumpButton))
                     jumpState = JumpState.PrepareToJump;
-                else if (Input.GetButtonUp("Jump"))
+                else if (Input.GetButtonUp(JumpButton))
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
@@ -138,6 +140,11 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        public enum LedgeState
+        {
+
         }
     }
 }

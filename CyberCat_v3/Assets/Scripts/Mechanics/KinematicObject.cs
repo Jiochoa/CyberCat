@@ -9,25 +9,18 @@ namespace Platformer.Mechanics
     /// </summary>
     public class KinematicObject : MonoBehaviour
     {
-        /// <summary>
-        /// The minimum normal (dot product) considered suitable for the entity sit on.
-        /// </summary>
+
+        [Header("Physics")]
+        //  The minimum normal (dot product) considered suitable for the entity sit on.
         public float minGroundNormalY = .65f;
 
-        /// <summary>
-        /// A custom gravity coefficient applied to this entity.
-        /// </summary>
+        // A custom gravity coefficient applied to this entity.
         public float gravityModifier = 1f;
 
-        /// <summary>
-        /// The current velocity of the entity.
-        /// </summary>
+        // The current velocity of the entity.
         public Vector2 velocity;
 
-        /// <summary>
-        /// Is the entity currently sitting on a surface?
-        /// </summary>
-        /// <value></value>
+        // Is the entity currently sitting on a surface?
         public bool IsGrounded { get; private set; }
 
         protected Vector2 targetVelocity;
@@ -38,7 +31,6 @@ namespace Platformer.Mechanics
 
         protected const float minMoveDistance = 0.001f;
         protected const float shellRadius = 0.01f;
-
 
         /// <summary>
         /// Bounce the object's vertical velocity.
@@ -84,6 +76,7 @@ namespace Platformer.Mechanics
         protected virtual void Start()
         {
             contactFilter.useTriggers = false;
+            // Use the settings from physiscs2D settings to determine what layers were gonna check collitions against
             contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
             contactFilter.useLayerMask = true;
         }
@@ -101,7 +94,8 @@ namespace Platformer.Mechanics
 
         protected virtual void FixedUpdate()
         {
-            //if already falling, fall faster than the jump speed, otherwise use normal gravity.
+            //if already falling, fall faster than the jump speed,
+            //otherwise use normal gravity.
             if (velocity.y < 0)
                 velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
             else
