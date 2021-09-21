@@ -5,6 +5,7 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using System;
 
 namespace Platformer.Mechanics
 {
@@ -34,6 +35,9 @@ namespace Platformer.Mechanics
         public float holdjumpTakeOffSpeed = 9;
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
+
+        // Ledge Climb
+        public LedgeState ledgeState = LedgeState.NoLedgeCloseBy;
 
         // Player's movement vars
         //public Health health;
@@ -73,19 +77,24 @@ namespace Platformer.Mechanics
                 move.x = 0;
             }
             UpdateJumpState();
+            UpdateLedgeState();
             base.Update();
         }
+
+       
 
         void UpdateJumpState()
         {
             jump = false;
             switch (jumpState)
             {
+                // jump button pressed -> initiate jumping
                 case JumpState.PrepareToJump:
                     jumpState = JumpState.Jumping;
                     jump = true;
                     stopJump = false;
                     break;
+                // Start jump -> stay in the air
                 case JumpState.Jumping:
                     if (!IsGrounded)
                     {
@@ -93,6 +102,7 @@ namespace Platformer.Mechanics
                         jumpState = JumpState.InFlight;
                     }
                     break;
+                // In the air -> reaches the ground
                 case JumpState.InFlight:
                     if (IsGrounded)
                     {
@@ -100,12 +110,23 @@ namespace Platformer.Mechanics
                         jumpState = JumpState.Landed;
                     }
                     break;
+                // Reached the ground -> ready to jump again
                 case JumpState.Landed:
                     jumpState = JumpState.Grounded;
                     break;
             }
         }
-
+        private void UpdateLedgeState()
+        {
+            switch (ledgeState)
+            {
+                // in the air -> able to ledge detectcted
+                // able to ledge climb -> ledge detected
+                // ledge detected -> position player in the edge
+                // player in ledge position -> start ledge climb
+                // climbing ledge -> over the ledge 
+            }
+        }
         protected override void ComputeVelocity()
         {
             if (jump && IsGrounded)
@@ -144,7 +165,9 @@ namespace Platformer.Mechanics
 
         public enum LedgeState
         {
-
+            NoLedgeCloseBy,
+            LedgeDetected,
+            ClimbingLedge
         }
     }
 }
