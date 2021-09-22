@@ -23,8 +23,8 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
 
         // -- ACTIONS --
-        private string horizButton = "Horizontal";
-        private string JumpButton = "Jump";
+        private string BUTTON_HORIZONTAL = "Horizontal";
+        private string BUTTON_JUMP = "Jump";
         // private string ActionButton = "Action";
 
         // Max horizontal speed of the player.
@@ -63,10 +63,10 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
-                move.x = Input.GetAxis(horizButton);
-                if (jumpState == JumpState.Grounded && Input.GetButtonDown(JumpButton))
+                move.x = Input.GetAxis(BUTTON_HORIZONTAL);
+                if (jumpState == JumpState.Grounded && Input.GetButtonDown(BUTTON_JUMP))
                     jumpState = JumpState.PrepareToJump;
-                else if (Input.GetButtonUp(JumpButton))
+                else if (Input.GetButtonUp(BUTTON_JUMP))
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
@@ -77,7 +77,7 @@ namespace Platformer.Mechanics
                 move.x = 0;
             }
             UpdateJumpState();
-            UpdateLedgeState();
+            //UpdateLedgeState();
             base.Update();
         }
 
@@ -88,7 +88,7 @@ namespace Platformer.Mechanics
             jump = false;
             switch (jumpState)
             {
-                // jump button pressed -> initiate jumping
+                // ready to jump -> initiate jumping
                 case JumpState.PrepareToJump:
                     jumpState = JumpState.Jumping;
                     jump = true;
@@ -116,15 +116,23 @@ namespace Platformer.Mechanics
                     break;
             }
         }
+
+        //TODO: Ledge Climb mechanics
         private void UpdateLedgeState()
         {
             switch (ledgeState)
             {
                 // in the air -> able to ledge detectcted
                 // able to ledge climb -> ledge detected
+                case LedgeState.PrepateToLedgeClimb:
+
+                    break;
                 // ledge detected -> position player in the edge
+                //case LedgeState.
                 // player in ledge position -> start ledge climb
-                // climbing ledge -> over the ledge 
+                // climbing ledge -> over the ledge  
+
+
             }
         }
         protected override void ComputeVelocity()
@@ -165,6 +173,7 @@ namespace Platformer.Mechanics
 
         public enum LedgeState
         {
+            PrepateToLedgeClimb,
             NoLedgeCloseBy,
             LedgeDetected,
             ClimbingLedge
