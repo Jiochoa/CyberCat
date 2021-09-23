@@ -21,6 +21,7 @@ namespace Platformer.Mechanics
         public AudioClip ouchAudio;
         /*internal new*/ public Collider2D collider2d;
         /*internal new*/ public AudioSource audioSource;
+        public Health health;
 
         // -- ACTIONS --
         private string BUTTON_HORIZONTAL = "Horizontal";
@@ -40,7 +41,6 @@ namespace Platformer.Mechanics
         public LedgeState ledgeState = LedgeState.NoLedgeCloseBy;
 
         // Player's movement vars
-        public Health health;
         public bool controlEnabled = true;
         bool jump;
         Vector2 move;
@@ -52,11 +52,11 @@ namespace Platformer.Mechanics
 
         void Awake()
         {
-            //health = GetComponent<Health>();
-            //audioSource = GetComponent<AudioSource>();
+            health = GetComponent<Health>();
+            audioSource = GetComponent<AudioSource>();
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
-            //animator = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
         }
 
         protected override void Update()
