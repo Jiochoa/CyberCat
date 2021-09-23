@@ -40,7 +40,7 @@ namespace Platformer.Mechanics
         public LedgeState ledgeState = LedgeState.NoLedgeCloseBy;
 
         // Player's movement vars
-        //public Health health;
+        public Health health;
         public bool controlEnabled = true;
         bool jump;
         Vector2 move;
