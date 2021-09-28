@@ -22,6 +22,8 @@ namespace Platformer.Mechanics
         /*internal new*/ public Collider2D collider2d;
         /*internal new*/ public AudioSource audioSource;
         public Health health;
+        public Joystick movementJoystick;
+        public Joystick actionJoystick;
 
         // -- ACTIONS --
         private string BUTTON_HORIZONTAL = "Horizontal";
@@ -57,13 +59,16 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            //joystick = GetComponent<Joystick>();
         }
 
         protected override void Update()
         {
             if (controlEnabled)
             {
-                move.x = Input.GetAxis(BUTTON_HORIZONTAL);
+                move.x = movementJoystick.Horizontal;//Input.GetAxis(BUTTON_HORIZONTAL);
+
+                 
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown(BUTTON_JUMP))
                     jumpState = JumpState.PrepareToJump;
                 else if (Input.GetButtonUp(BUTTON_JUMP))
