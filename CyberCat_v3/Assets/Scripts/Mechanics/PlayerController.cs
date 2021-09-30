@@ -34,7 +34,8 @@ namespace Platformer.Mechanics
         public float maxSpeed = 7;
 
         // Initial jump velocity at the start of a jump.
-        public float jumpTakeOffSpeed = 7;
+        bool jump;
+        public float jumpTakeOffSpeed = 10;
         public float holdjumpTakeOffSpeed = 9;
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
@@ -43,9 +44,8 @@ namespace Platformer.Mechanics
         public LedgeState ledgeState = LedgeState.NoLedgeCloseBy;
 
         // Player's movement vars
-        public bool controlEnabled = true;
-        bool jump;
         Vector2 move;
+        public bool controlEnabled = true;
         SpriteRenderer spriteRenderer;
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
@@ -66,11 +66,15 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
-                move.x = movementJoystick.Horizontal;//Input.GetAxis(BUTTON_HORIZONTAL);
+                move.x = movementJoystick.Horizontal + Input.GetAxis(BUTTON_HORIZONTAL);
 
                  
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown(BUTTON_JUMP))
+                {
                     jumpState = JumpState.PrepareToJump;
+                    //////////////
+                    controlEnabled = false;
+                }
                 else if (Input.GetButtonUp(BUTTON_JUMP))
                 {
                     stopJump = true;
@@ -86,7 +90,6 @@ namespace Platformer.Mechanics
             base.Update();
         }
 
-       
 
         void UpdateJumpState()
         {
@@ -117,6 +120,8 @@ namespace Platformer.Mechanics
                     break;
                 // Reached the ground -> ready to jump again
                 case JumpState.Landed:
+                    ///////////////
+                    controlEnabled = true;
                     jumpState = JumpState.Grounded;
                     break;
             }
