@@ -69,11 +69,9 @@ namespace Platformer.Mechanics
                 move.x = movementJoystick.Horizontal + Input.GetAxis(BUTTON_HORIZONTAL);
 
                  
-                if (jumpState == JumpState.Grounded && Input.GetButtonDown(BUTTON_JUMP))
+                if (jumpState == JumpState.Grounded && (Input.GetButtonDown(BUTTON_JUMP) || actionJoystick.Vertical > 0.5))
                 {
                     jumpState = JumpState.PrepareToJump;
-                    //////////////
-                    controlEnabled = false;
                 }
                 else if (Input.GetButtonUp(BUTTON_JUMP))
                 {
@@ -116,12 +114,14 @@ namespace Platformer.Mechanics
                     {
                         Schedule<PlayerLanded>().player = this;
                         jumpState = JumpState.Landed;
+                    } else
+                    {
+                        //check for ledge to climb
+                        print("This is a test");
                     }
                     break;
                 // Reached the ground -> ready to jump again
                 case JumpState.Landed:
-                    ///////////////
-                    controlEnabled = true;
                     jumpState = JumpState.Grounded;
                     break;
             }
@@ -161,10 +161,14 @@ namespace Platformer.Mechanics
                 }
             }
 
+
             if (move.x > 0.01f)
                 spriteRenderer.flipX = false;
             else if (move.x < -0.01f)
                 spriteRenderer.flipX = true;
+
+
+            
 
             //animator.SetBool("grounded", IsGrounded);
             //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);

@@ -636,7 +636,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1724885870}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 9.76
+    OrthographicSize: 9.16
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -754,7 +754,7 @@ Camera:
   far clip plane: 5000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.76
+  orthographic size: 9.16
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -778,7 +778,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.9970274, y: 2.8693895, z: -10}
+  m_LocalPosition: {x: 2.8428183, y: -0.45315027, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1999724345}
@@ -1766,7 +1766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1335362390
 Transform:
   m_ObjectHideFlags: 0
@@ -1775,8 +1775,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335362389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.81, y: -6.57, z: 0}
-  m_LocalScale: {x: 18.98714, y: 2.8461568, z: 1}
+  m_LocalPosition: {x: -0.6488, y: -5.1272, z: 0}
+  m_LocalScale: {x: 3.904081, y: 2.5905967, z: 1}
   m_Children: []
   m_Father: {fileID: 1986900555}
   m_RootOrder: 1
@@ -2262,7 +2262,7 @@ PolygonCollider2D:
     - - {x: 136.76785, y: -85.655594}
       - {x: 136.52563, y: 20.292326}
       - {x: -22.39227, y: 20.807512}
-      - {x: -22.520899, y: -3.7086945}
+      - {x: -22.33936, y: -6.4317713}
       - {x: 25.774979, y: -7.1376815}
       - {x: 30.465435, y: -85.729004}
 --- !u!1 &2137202745
@@ -2402,12 +2402,12 @@ MonoBehaviour:
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_CameraDistance: 10
-  m_DeadZoneWidth: 0.1
+  m_DeadZoneWidth: 0.06386719
   m_DeadZoneHeight: 0.1
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
   m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
+  m_SoftZoneHeight: 1.736035
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1

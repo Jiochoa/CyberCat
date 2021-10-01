@@ -23,6 +23,13 @@ namespace Platformer.Mechanics
         // Is the entity currently sitting on a surface?
         public bool IsGrounded { get; private set; }
 
+        // Is the entity able to climb a ledge
+        public bool CanClimbLedge { get; private set; }
+        private bool isTouchingLedge;
+        private bool isTouchingWall;
+        private bool ledgeDetected;
+
+
         protected Vector2 targetVelocity;
         protected Vector2 groundNormal;
         protected Rigidbody2D body;
@@ -94,8 +101,8 @@ namespace Platformer.Mechanics
 
         protected virtual void FixedUpdate()
         {
-            //if already falling, fall faster than the jump speed,
-            //otherwise use normal gravity.
+            // if already falling, fall faster than the jump speed,
+            // otherwise use normal gravity.
             if (velocity.y < 0)
                 velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
             else
@@ -111,11 +118,11 @@ namespace Platformer.Mechanics
 
             var move = moveAlongGround * deltaPosition.x;
 
-            PerformMovement(move, false);
+            PerformMovement2(move, false);
 
             move = Vector2.up * deltaPosition.y;
 
-            PerformMovement(move, true);
+            PerformMovement2(move, true);
 
         }
 
@@ -125,13 +132,13 @@ namespace Platformer.Mechanics
 
             if (distance > minMoveDistance)
             {
-                //check if we hit anything in current direction of travel
+                // check if we hit anything in current direction of travel
                 var count = body.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
                 for (var i = 0; i < count; i++)
                 {
                     var currentNormal = hitBuffer[i].normal;
 
-                    //is this surface flat enough to land on?
+                    // is this surface flat enough to land on?
                     if (currentNormal.y > minGroundNormalY)
                     {
                         IsGrounded = true;
@@ -144,27 +151,127 @@ namespace Platformer.Mechanics
                     }
                     if (IsGrounded)
                     {
-                        //how much of our velocity aligns with surface normal?
+                        // how much of our velocity aligns with surface normal?
                         var projection = Vector2.Dot(velocity, currentNormal);
                         if (projection < 0)
                         {
-                            //slower velocity if moving against the normal (up a hill).
+                            // slower velocity if moving against the normal (up a hill).
                             velocity = velocity - projection * currentNormal;
                         }
                     }
                     else
                     {
-                        //We are airborne, but hit something, so cancel vertical up and horizontal velocity.
+                        // We are airborne, but hit something, so cancel vertical up and horizontal velocity.
                         velocity.x *= 0;
                         velocity.y = Mathf.Min(velocity.y, 0);
                     }
-                    //remove shellDistance from actual move distance.
+                    // remove shellDistance from actual move distance.
                     var modifiedDistance = hitBuffer[i].distance - shellRadius;
                     distance = modifiedDistance < distance ? modifiedDistance : distance;
                 }
             }
             body.position = body.position + move.normalized * distance;
         }
+        
+        // simplify PerformMovement
+        void PerformMovement2(Vector2 move, bool yMovement)
+        {
 
+            var distance = move.magnitude;
+            /*
+            if (distance > minMoveDistance)
+            {
+                // check if we hit anything in current direction of travel
+                var count = body.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
+                for (var i = 0; i < count; i++)
+                {
+                    var currentNormal = hitBuffer[i].normal;
+
+                    // is this surface flat enough to land on?
+                    if (currentNormal.y > minGroundNormalY)
+                    {
+                        IsGrounded = true;
+                        // if moving up, change the groundNormal to new surface normal.
+                        if (yMovement)
+                        {
+                            //groundNormal = currentNormal;
+                            //currentNormal.x = 0;
+                        }
+                    }
+                    if (IsGrounded)
+                    {
+                        // how much of our velocity aligns with surface normal?
+                        var projection = Vector2.Dot(velocity, currentNormal);
+                        if (projection < 0)
+                        {
+                            // slower velocity if moving against the normal (up a hill).
+                            velocity = velocity - projection * currentNormal;
+                        }
+                    }
+                    else
+                    {
+                        // We are airborne, but hit something, so cancel vertical up and horizontal velocity.
+                        velocity.x *= 0;
+                        velocity.y = Mathf.Min(velocity.y, 0);
+                    }
+                    // remove shellDistance from actual move distance.
+                    var modifiedDistance = hitBuffer[i].distance - shellRadius;
+                    distance = modifiedDistance < distance ? modifiedDistance : distance;
+                }
+            }
+
+            body.position = body.position + move.normalized * distance;
+            */
+            bool canMove = true;
+            float movementSmoothing = .05f;
+            Vector3 m_Velocity = Vector3.zero;
+            if (IsGrounded && canMove)
+            {
+                Vector3 targetVelocity = new Vector2(distance * 10f, body.velocity.y);
+                body.velocity = Vector3.SmoothDamp(
+                    body.velocity, 
+                    targetVelocity, 
+                    ref m_Velocity, 
+                    movementSmoothing);
+
+            }
+
+
+        }
+
+        public void Flip()
+        {
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
+
+
+        }
+
+        /// <summary>
+        /// Update the status of player in the environment
+        /// </summary>
+        void CheckSurroundings()
+        {
+            // set isGrounded
+            // set CanClimbLedge
+            // set CanMoveObject
+        }
+
+
+        /// <summary>
+        /// Draw every source where the character can interact with
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+
+            // ground check sphere
+
+            // wall check ray
+
+            // ledge check ray
+            
+        }
     }
 }
