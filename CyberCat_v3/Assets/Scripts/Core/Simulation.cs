@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Platformer.Core
 {
     /// <summary>
-    /// The Simulation class implements the discrete event simulator pattern.
+    /// The Simulation class implements the Discrete-Event Simulator(DES) Design Pattern.
     /// Events are pooled, with a default capacity of 4 instances.
     /// </summary>
     public static partial class Simulation

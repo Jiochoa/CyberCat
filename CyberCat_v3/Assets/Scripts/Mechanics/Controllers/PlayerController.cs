@@ -16,6 +16,7 @@ namespace Platformer.Mechanics
     public class PlayerController : KinematicObject
     {
         // -- CATCHE --
+        [Header("Audio Settings")]
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
@@ -34,11 +35,11 @@ namespace Platformer.Mechanics
         public float maxSpeed = 7;
 
         // Initial jump velocity at the start of a jump.
-        bool jump;
         public float jumpTakeOffSpeed = 10;
+        bool jump;
+        private bool stopJump;
         public float holdjumpTakeOffSpeed = 9;
         public JumpState jumpState = JumpState.Grounded;
-        private bool stopJump;
 
         // Ledge Climb
         public LedgeState ledgeState = LedgeState.NoLedgeCloseBy;
@@ -66,18 +67,22 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
+                // get Move intput 
                 move.x = movementJoystick.Horizontal + Input.GetAxis(BUTTON_HORIZONTAL);
 
-                 
+                // Get Jump input
+                
                 if (jumpState == JumpState.Grounded && (Input.GetButtonDown(BUTTON_JUMP) || actionJoystick.Vertical > 0.5))
                 {
                     jumpState = JumpState.PrepareToJump;
+                    //controlEnabled = false;
                 }
-                else if (Input.GetButtonUp(BUTTON_JUMP))
+                else if (Input.GetButtonUp(BUTTON_JUMP) )
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+                
             }
             else
             {
@@ -117,12 +122,13 @@ namespace Platformer.Mechanics
                     } else
                     {
                         //check for ledge to climb
-                        print("This is a test");
+                        //print("This is whe we update ledge climb state");
                     }
                     break;
                 // Reached the ground -> ready to jump again
                 case JumpState.Landed:
                     jumpState = JumpState.Grounded;
+                    //controlEnabled = true;
                     break;
             }
         }
@@ -147,8 +153,10 @@ namespace Platformer.Mechanics
         }
         protected override void ComputeVelocity()
         {
+            
             if (jump && IsGrounded)
             {
+                // new velocity of entity with added jump force
                 velocity.y = jumpTakeOffSpeed * model.jumpModifier;
                 jump = false;
             }
@@ -157,18 +165,22 @@ namespace Platformer.Mechanics
                 stopJump = false;
                 if (velocity.y > 0)
                 {
-                    velocity.y = velocity.y * model.jumpDeceleration;
+                    // velocity of entity while falling
+                   velocity.y = velocity.y * model.jumpDeceleration;
                 }
             }
-
-
-            if (move.x > 0.01f)
-                spriteRenderer.flipX = false;
-            else if (move.x < -0.01f)
-                spriteRenderer.flipX = true;
-
-
             
+            if (move.x > 0.01f)
+            {
+                spriteRenderer.flipX = false;
+                IsFacingRight = true;
+            }
+            else if (move.x < -0.01f)
+            {
+                spriteRenderer.flipX = true;
+                IsFacingRight = false;
+
+            }
 
             //animator.SetBool("grounded", IsGrounded);
             //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);

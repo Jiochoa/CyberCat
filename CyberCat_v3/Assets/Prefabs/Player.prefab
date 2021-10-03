@@ -271,8 +271,10 @@ MonoBehaviour:
   collider2d: {fileID: 0}
   audioSource: {fileID: 0}
   health: {fileID: 0}
+  movementJoystick: {fileID: 0}
+  actionJoystick: {fileID: 0}
   maxSpeed: 7
-  jumpTakeOffSpeed: 7
+  jumpTakeOffSpeed: 5
   holdjumpTakeOffSpeed: 9
   jumpState: 0
   ledgeState: 0
