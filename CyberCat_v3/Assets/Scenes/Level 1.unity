@@ -778,7 +778,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.70443535, y: -0.4531498, z: -10}
+  m_LocalPosition: {x: 2.8428192, y: -0.4531498, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1999724345}
@@ -802,6 +802,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ledgeCheck: {fileID: 1116208123}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1024
+  reachDistance: 0.5
+  ledgeClimbXOffset1: 0
+  ledgeClimbYOffset1: 0
+  ledgeClimbXOffset2: 0
+  ledgeClimbYOffset2: 0
 --- !u!1001 &790970542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1823,8 +1831,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335362389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.92, y: -4.8, z: 0}
-  m_LocalScale: {x: 3.904081, y: 2.5905967, z: 1}
+  m_LocalPosition: {x: 14.92, y: -5.001, z: 0}
+  m_LocalScale: {x: 3.904081, y: 2.1885362, z: 1}
   m_Children: []
   m_Father: {fileID: 1986900555}
   m_RootOrder: 1
@@ -2501,6 +2509,10 @@ PrefabInstance:
       propertyPath: movementJoystick
       value: 
       objectReference: {fileID: 1524761169}
+    - target: {fileID: 1724885873, guid: 18abc5511bc92fd4e848ed5bc3a89c21, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f0ba713c7df587a499d7f18fd377d8c7, type: 2}
     - target: {fileID: 1009450344909356810, guid: 18abc5511bc92fd4e848ed5bc3a89c21, type: 3}
       propertyPath: m_Name
       value: Player

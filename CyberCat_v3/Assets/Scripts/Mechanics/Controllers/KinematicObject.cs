@@ -29,10 +29,9 @@ namespace Platformer.Mechanics
         
         public bool IsFacingRight { get; set; }
 
-
         protected Vector2 targetVelocity;
         protected Vector2 groundNormal;
-        protected Rigidbody2D body;
+        public Rigidbody2D body;
         protected ContactFilter2D contactFilter;
         protected RaycastHit2D[] hitBuffer = new RaycastHit2D[16];
 
@@ -175,9 +174,11 @@ namespace Platformer.Mechanics
                     else
                     {
                         // We are airborne, but hit something, so cancel vertical up and horizontal velocity.
+
                         IsTouchingWall = true;
                         velocity.x *= 0;
                         velocity.y = Mathf.Min(velocity.y, 0);
+
                     }
                     // remove shellDistance from actual move distance.
                     float modifiedDistance = hitBuffer[i].distance - shellRadius;

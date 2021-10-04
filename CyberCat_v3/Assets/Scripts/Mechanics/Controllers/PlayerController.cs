@@ -51,6 +51,9 @@ namespace Platformer.Mechanics
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        Vector3 theScale;
+
+
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
@@ -170,20 +173,24 @@ namespace Platformer.Mechanics
                 }
             }
             
+            // flip right
             if (move.x > 0.01f)
             {
                 spriteRenderer.flipX = false;
+
                 IsFacingRight = true;
             }
+            // flip left
             else if (move.x < -0.01f)
             {
                 spriteRenderer.flipX = true;
+
                 IsFacingRight = false;
 
             }
 
-            //animator.SetBool("grounded", IsGrounded);
-            //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
+            animator.SetBool("grounded", IsGrounded);
+            animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
         }

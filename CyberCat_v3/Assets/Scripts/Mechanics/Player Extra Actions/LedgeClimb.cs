@@ -17,10 +17,21 @@ namespace Platformer.Mechanics
         // -- SETUP --
         [Header("Ledge Climb Settings")]
         [SerializeField] private Transform ledgeCheck;
+        [SerializeField] private LayerMask whatIsGround;
+
+
+        public float reachDistance = 0.5f;
         private bool isTouchingLedge;
         private bool ledgeDetected;
 
-
+        private bool canClimbLedge = false;
+        private Vector2 ledgePosBot;
+        private Vector2 ledgePos1;
+        private Vector2 ledgePos2;
+        public float ledgeClimbXOffset1 = 0f;
+        public float ledgeClimbYOffset1 = 0f;
+        public float ledgeClimbXOffset2 = 0f;
+        public float ledgeClimbYOffset2 = 0f;
 
         private void Awake()
         {
@@ -28,52 +39,109 @@ namespace Platformer.Mechanics
 
         }
 
-        private void FixedUpdate()
-        {
-            /*
-            if (playerKO.IsFacingRight)
-            {
-                //isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, reachDistance, whatIsGround);
-                //isTouchingLedge = Physics2D.Raycast(ledgeCheck.position, transform.right, reachDistance, whatIsGround);
-                //isTouchingButton = Physics2D.Raycast(ledgeCheck.position, transform.right, reachDistance, whatIsButton);
-            }
-            else
-            {
-                //isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, reachDistance, whatIsGround);
-                //isTouchingLedge = Physics2D.Raycast(ledgeCheck.position, -transform.right, reachDistance, whatIsGround);
-                //isTouchingButton = Physics2D.Raycast(ledgeCheck.position, -transform.right, reachDistance, whatIsButton);
-            }
-
-            if (playerKO.IsTouchingWall && !isTouchingLedge && !ledgeDetected)
-            {
-                ledgeDetected = true;
-                ledgePosBot = wallCheck.position;
-            }
-
-            if (isGrounded)
-            {
-                OnLandEvent.Invoke();
-            }
-            else
-            {
-                OnJumpEvent.Invoke();
-            }
-            */
-
-        }
-
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
         void Update()
         {
+            if (playerKO.IsFacingRight)
+            {
+                isTouchingLedge = Physics2D.Raycast(
+                    ledgeCheck.position, playerKO.transform.right, reachDistance, 
+                    whatIsGround);
+            }
+            else
+            {
+                isTouchingLedge = Physics2D.Raycast(
+                    ledgeCheck.position, -playerKO.transform.right, reachDistance, 
+                    whatIsGround);
+            }
+            
+            if (playerKO.IsTouchingWall && !isTouchingLedge && !ledgeDetected)
+            {
+                print("canClimbLedge");
+                ledgeDetected = true;
+                ledgePosBot = playerKO.transform.position;
+                //ledgePosBot = wallCheck.position;
+
+            }
+
 
         }
+        
+        private void CheckLedgeClimb()
+        {
+            if (ledgeDetected && !canClimbLedge)
+            {
+                canClimbLedge = true;
+
+                if (playerKO.IsFacingRight)
+                {
+                    ledgePos1 = new Vector2(
+                        Mathf.Floor(ledgePosBot.x + reachDistance) - ledgeClimbXOffset1, 
+                        Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset1);
+                    ledgePos2 = new Vector2(
+                        Mathf.Floor(ledgePosBot.x + reachDistance) + ledgeClimbXOffset2, 
+                        Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset2);
+                }
+                else
+                {
+                    ledgePos1 = new Vector2(
+                        Mathf.Ceil(ledgePosBot.x - reachDistance) + ledgeClimbXOffset1, 
+                        Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset1);
+                    ledgePos2 = new Vector2(
+                        Mathf.Ceil(ledgePosBot.x - reachDistance) - ledgeClimbXOffset2, 
+                        Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset2);
+                }
+
+                //canMove = false;
+                //canFlip = false;
+                //m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+                playerKO.body.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+
+
+                //OnLedgeClimbEvent.Invoke(canClimbLedge);
+                //anim.SetBool("canClimbLedge", canClimbLedge);
+            }
+
+            if (canClimbLedge)
+            {
+                transform.position = ledgePos1;
+            }
+
+        }
+
+        public void FinishLedgeClimb()
+        {
+            print("Reached FinishLedgeClimb");
+            canClimbLedge = false;
+            transform.position = ledgePos2;
+            //canMove = true;
+            //canFlip = true;
+
+            ledgeDetected = false;
+            playerKO.body.constraints = RigidbodyConstraints2D.FreezeRotation;
+            //OnLedgeClimbEvent.Invoke(canClimbLedge);
+            //anim.SetBool("canClimbLedge", canClimbLedge);
+        }
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+
+            // ground check sphere
+            Gizmos.DrawLine(
+                ledgeCheck.position,
+                (Vector2)ledgeCheck.position + Vector2.right * playerKO.transform.localScale.x * reachDistance
+                );
+            
+            //Gizmos.DrawSphere(transform.position, shellRadius + 1);
+            // wall check ray
+
+            // ledge check ray
+
+
+
+
+        }
+
     }
 }
 
