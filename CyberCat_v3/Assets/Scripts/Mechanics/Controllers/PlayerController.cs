@@ -52,7 +52,7 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         Vector3 theScale;
-
+        LedgeClimb ledgeClimb;
 
         public Bounds Bounds => collider2d.bounds;
 
@@ -64,6 +64,7 @@ namespace Platformer.Mechanics
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
             //joystick = GetComponent<Joystick>();
+            ledgeClimb = GetComponent<LedgeClimb>();
         }
 
         protected override void Update()
@@ -94,6 +95,8 @@ namespace Platformer.Mechanics
             UpdateJumpState();
             //UpdateLedgeState();
             base.Update();
+
+            ledgeClimb.CheckLedgeClimb();
         }
 
 

@@ -66,7 +66,7 @@ namespace Platformer.Mechanics
 
         }
         
-        private void CheckLedgeClimb()
+        public void CheckLedgeClimb()
         {
             if (ledgeDetected && !canClimbLedge)
             {
