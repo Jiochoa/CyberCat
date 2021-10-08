@@ -14,8 +14,8 @@ namespace Platformer.Mechanics
         public Joystick movementJoystick;
         public Joystick actionJoystick;
 
-        float timer = 0;
-        private bool WasHolding => timer < Time.time;
+        //float timer = 0;
+        //private bool WasHolding => timer < Time.time;
 
 
         // Catche
@@ -216,8 +216,16 @@ namespace Platformer.Mechanics
                 whatIsObstacle);
 
             // check is valid obstacle is within characters reach
-            bool actionButtonPressed = Input.GetButtonDown(inputAction);
-            bool actionButtonReleased = Input.GetButtonUp(inputAction);
+            //bool actionButtonPressed = Input.GetButtonDown(inputAction);
+            //bool actionButtonReleased = Input.GetButtonUp(inputAction);
+            bool actionButtonPressed = 
+                (Mathf.Abs(actionJoystick.Vertical) > actionJoystick.DeadZone 
+                || Mathf.Abs(actionJoystick.Vertical) > actionJoystick.DeadZone);
+            bool actionButtonReleased = 
+                (Mathf.Abs(actionJoystick.Vertical) == actionJoystick.DeadZone
+                || Mathf.Abs(actionJoystick.Vertical) == actionJoystick.DeadZone);
+
+
             if (actionButtonPressed && playerReach.collider != null
                 && playerReach.collider.tag == "Movable")
             {
@@ -263,8 +271,21 @@ namespace Platformer.Mechanics
             animator.SetBool("canClimbLedge", climbing);
         }
 
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if(collision.gameObject.tag == "Elevator")
+            {
+                transform.parent = collision.gameObject.transform;
+            }
+        }
 
-
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.gameObject.tag == "Elevator")
+            {
+                transform.parent = null;
+            }
+        }
     }
 
 }
