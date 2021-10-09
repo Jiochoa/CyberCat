@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 1434062657837853798}
   - component: {fileID: 1829941423}
   - component: {fileID: 1829941424}
+  - component: {fileID: 2107834348}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -347,8 +348,6 @@ MonoBehaviour:
   collider2d: {fileID: 0}
   audioSource: {fileID: 0}
   health: {fileID: 0}
-  movementJoystick: {fileID: 0}
-  actionJoystick: {fileID: 0}
   controlEnabled: 0
   velocity: {x: 0, y: 0}
   jumpState: 0
@@ -429,13 +428,31 @@ MonoBehaviour:
   whatIsObstacle:
     serializedVersion: 2
     m_Bits: 512
+  movementJoystick: {fileID: 0}
+  actionJoystick: {fileID: 0}
   controller: {fileID: 1829941423}
   lineRenderer: {fileID: 0}
   animator: {fileID: 1434062657837853798}
   runSpeed: 20
-  shortJumpForce: 400
+  shortJumpForce: 200
   longJumpForce: 90
   reachDistance: 1
+--- !u!114 &2107834348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7762298615082112299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3990a1d8bec39b84bbcd7a56971e2711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystick: {fileID: 0}
+  power: 20
+  maxDrag: 5
+  lr: {fileID: 0}
 --- !u!1 &7762298615140729166
 GameObject:
   m_ObjectHideFlags: 0

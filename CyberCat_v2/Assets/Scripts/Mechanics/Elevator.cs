@@ -32,33 +32,37 @@ public class Elevator : MonoBehaviour
 
     void StartElevator()
     {
-        if(Vector2.Distance(player.position, elevatorSwitch.position) < 0.05f  && Input.GetKeyDown(KeyCode.E))
+        if(Vector2.Distance(player.position, elevatorSwitch.position) < 0.5f  && Input.GetKeyDown(KeyCode.E))
         {
             print("E detected");
-            if(transform.position.y <= downPos.position.y)
+            if(transform.position.y >= downPos.position.y)
             {
                 isElevatorDown = true;
             }
-            else if(transform.position.y >= upperPos.position.y)
+            else if (transform.position.y <= upperPos.position.y)
             {
                 isElevatorDown = false;
             }
+  
+            
+            
         }
 
-        if(isElevatorDown)
+        if(!isElevatorDown)
         {
-            transform.position = Vector2.MoveTowards(transform.position, upperPos.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, downPos.position, speed * Time.deltaTime);
+            
         } 
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, downPos.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, upperPos.position, speed * Time.deltaTime);
 
         }
     }
 
     void DisplayColor()
     {
-        if (transform.position.y <= downPos.position.y || transform.position.y >= upperPos.position.y)
+        if (transform.position.y >= downPos.position.y || transform.position.y <= upperPos.position.y)
         {
             elevatorRenderer.color = Color.green;
         } 
