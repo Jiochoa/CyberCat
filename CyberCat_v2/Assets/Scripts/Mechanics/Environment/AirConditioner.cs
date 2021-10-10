@@ -6,30 +6,47 @@ namespace Platformer.Mechanics
 {
     public class AirConditioner : MonoBehaviour
     {
-        //Transform player;
-        Transform fanSwitch;
-        SpriteRenderer switchRenderer;
-        Transform areaOfEffect;
+        public Transform player;
+        public Transform fanSwitch;
+        public SpriteRenderer switchRenderer;
+        public AreaEffector2D areaOfEffect;
 
-        bool isBlowingIn = false;
-        public float fanPower = -1f;
+        bool isBlowingIn = true;
+        public float fanPower = 1f;
 
 
         // Start is called before the first frame update
-        void Start() { }
+        void Start() 
+        {
+            areaOfEffect = GetComponent<AreaEffector2D>();
+        }
 
         // Update is called once per frame
         void Update()
         {
-            //StartAirConditioner();
-            //DisplayColor();
+            StartAirConditioner();
+            DisplayColor();
         }
 
         void StartAirConditioner()
         {
+            if (Vector2.Distance(player.position, fanSwitch.position) < 0.5f && Input.GetKeyDown(KeyCode.E))
+            {
+                fanPower *= -1;
+                areaOfEffect.forceMagnitude = fanPower;
 
+                if (isBlowingIn) {
+                    isBlowingIn = false; 
+                } else
+                {
+                    isBlowingIn = true;
+                }
+
+            }
         }
 
+
+        /*
         void OnTriggerEnter2D(Collider2D other)
         {
             var rb = other.attachedRigidbody;
@@ -44,15 +61,15 @@ namespace Platformer.Mechanics
         void AddVelocity(PlayerController player)
         {
 
-            player.Move(fanPower, Vector2.zero, null) ;
+            player.Move(fanPower) ;
             
         }
 
-
+        */
 
         void DisplayColor()
         {
-            if (isBlowingIn)
+            if (!isBlowingIn)
             {
                 switchRenderer.color = Color.green;
             }

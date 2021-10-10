@@ -143,7 +143,7 @@ namespace Platformer.Mechanics
 
 		}
 
-		public void Move(float moveForce, Vector2 jumpVector, GameObject validObstacle)
+		public void Move(float moveForce)
 		{
 
 			if (isGrounded && canMove)
@@ -160,6 +160,18 @@ namespace Platformer.Mechanics
 				}
 
 			}
+
+			if (!isGrounded && canMove)
+			{
+				CheckLedgeClimb();
+
+			}
+
+
+		}
+		public void Move(Vector2 jumpVector)
+		{
+
 			if (isGrounded && jumpVector != Vector2.zero)
 			{
 				isGrounded = false;
@@ -167,6 +179,10 @@ namespace Platformer.Mechanics
 				m_Rigidbody2D.AddForce(jumpVector);
 
 			}
+		}
+		public void Move(GameObject validObstacle)
+		{
+
 			if (isGrounded && validObstacle != null)
 			{
 				canFlip = false;
@@ -174,7 +190,6 @@ namespace Platformer.Mechanics
 				objectCatched.GetComponent<FixedJoint2D>().enabled = true;
 				objectCatched.GetComponent<FixedJoint2D>().connectedBody = this.GetComponent<Rigidbody2D>();
 				//m_Grounded = false;
-
 
 			}
 			else if (isGrounded && validObstacle == null && canMove)
@@ -185,48 +200,41 @@ namespace Platformer.Mechanics
 					objectCatched = null;
 					canFlip = true;
 				}
-
 			}
-
-			if (!isGrounded && canMove)
-			{
-
-				if (ledgeDetected && !canClimbLedge)
-				{
-					canClimbLedge = true;
-
-					if (isFacingRight)
-					{
-						ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + reachDistance) - ledgeClimbXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset1);
-						ledgePos2 = new Vector2(Mathf.Floor(ledgePosBot.x + reachDistance) + ledgeClimbXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset2);
-					}
-					else
-					{
-						ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - reachDistance) + ledgeClimbXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset1);
-						ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - reachDistance) - ledgeClimbXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset2);
-					}
-
-					//TODO: Find a way to stop the 
-					canMove = false;
-					canFlip = false;
-					m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-					//m_Rigidbody2D.isKinematic = true;
-
-					OnLedgeClimbEvent.Invoke(canClimbLedge);
-					//anim.SetBool("canClimbLedge", canClimbLed ge);
-				}
-
-				if (canClimbLedge)
-				{
-					transform.position = ledgePos1;
-				}
-
-			}
-
-
 		}
 
+		void CheckLedgeClimb()
+        {
+			if (ledgeDetected && !canClimbLedge)
+			{
+				canClimbLedge = true;
 
+				if (isFacingRight)
+				{
+					ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + reachDistance) - ledgeClimbXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset1);
+					ledgePos2 = new Vector2(Mathf.Floor(ledgePosBot.x + reachDistance) + ledgeClimbXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset2);
+				}
+				else
+				{
+					ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - reachDistance) + ledgeClimbXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset1);
+					ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - reachDistance) - ledgeClimbXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeClimbYOffset2);
+				}
+
+				//TODO: Find a way to stop the 
+				canMove = false;
+				canFlip = false;
+				m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+				//m_Rigidbody2D.isKinematic = true;
+
+				OnLedgeClimbEvent.Invoke(canClimbLedge);
+				//anim.SetBool("canClimbLedge", canClimbLed ge);
+			}
+
+			if (canClimbLedge)
+			{
+				transform.position = ledgePos1;
+			}
+		}
 
 		private void Flip()
 		{
@@ -284,7 +292,6 @@ namespace Platformer.Mechanics
 
 			//Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
 		}
-
 
 		public enum JumpState
 		{

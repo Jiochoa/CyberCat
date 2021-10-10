@@ -71,10 +71,11 @@ namespace Platformer.Mechanics
 
         private void FixedUpdate()
         {
-            controller.Move(
-                horizontalMove * Time.fixedDeltaTime,
-                jumpVector,
-                objectDetected);
+            //controller.Move(horizontalMove * Time.fixedDeltaTime,jumpVector,objectDetected);
+            controller.Move(horizontalMove * Time.fixedDeltaTime);
+            controller.Move(jumpVector);
+            controller.Move(objectDetected);
+
 
             horizontalMove = 0;
             jumpVector = Vector2.zero;
