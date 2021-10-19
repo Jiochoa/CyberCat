@@ -37,7 +37,7 @@ namespace Platformer.Mechanics
 
             //if(touch.phase == TouchPhase.Began)
             bool detectedJoystick = joystick.Vertical < -0.1f;
-                //(Mathf.Abs(joystick.Vertical) > joystick.DeadZone 
+                //(Mathf.Abs(joystick.Horizontal) > joystick.DeadZone 
                 //|| Mathf.Abs(joystick.Vertical) > joystick.DeadZone);
 
             // 0 & 0 & 0 => noInput & 0 & 0
