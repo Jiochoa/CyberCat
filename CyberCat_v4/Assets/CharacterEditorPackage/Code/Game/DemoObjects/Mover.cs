@@ -2,10 +2,12 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 //--------------------------------------------------------------------
-//Small class to move an object back and forth along a path. Used for moving platforms in levels
+//Small class to move an object back and forth along a path. Used for
+//moving platforms in levels
 //--------------------------------------------------------------------
 public class Mover: MonoBehaviour
 {
+    [Header("Mover")]
     [SerializeField] float m_MovementSpeed = 0.0f;
     [SerializeField] float m_MaxDistance = 0.0f;
     [SerializeField] Vector3 m_Direction;
@@ -22,11 +24,37 @@ public class Mover: MonoBehaviour
 
     void FixedUpdate()
     {
+
         m_Time += Time.fixedDeltaTime * m_MovementSpeed;
         float offset = m_MoveCurve.Evaluate(m_Time) * m_MaxDistance * 2.0f - m_MaxDistance;
+        /*
+        Vector3 t_Direction;
+
+        if(m_MoveAlignedToRotation)
+        {
+            t_Direction = transform.rotation * m_Direction.normalized;
+        } 
+        else
+        {
+            t_Direction = m_Direction.normalized;
+        }
+        */
         Vector3 t_Direction = m_MoveAlignedToRotation ? transform.rotation * m_Direction.normalized : m_Direction.normalized;
         transform.position = m_StartPosition + offset * t_Direction.normalized;
+        //movePlatform(t_Direction, offset);
     }
+
+    void movePlatform(Vector3 t_Direction, float offset)
+    {
+        transform.position = m_StartPosition + offset * t_Direction.normalized;
+    }
+
+    void stopPlatform()
+    {
+
+    }
+
+
 
     void OnDrawGizmos()
     {
