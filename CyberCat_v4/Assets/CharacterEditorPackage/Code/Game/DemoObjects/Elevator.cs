@@ -16,48 +16,62 @@ public class Elevator : Mover
     Transform downPos;
     public SpriteRenderer elevatorRenderer;
 
-    private bool enableSwitch;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    bool elevatorIsUp = false;
+    bool elevatorIsDown = false;
+
+
 
     // Update is called once per frame
     void Update()
     {
+
+        checkPlatformPosition();
+
         bool playerCanReachSwitch = Vector2.Distance(player.position, elevatorSwitch.position) < 0.5f;
         bool elevatorButtonPressed = Input.GetKeyDown(KeyCode.E);
+        
 
-        // Pre: player is within reach and player pressed the switch
-        if (enableSwitch && playerCanReachSwitch)
+        // Pre: player is within reach 
+        if (platfromIsEnabled && playerCanReachSwitch)
         {
-            
-            /*  if platform is not moving and elevator button is pressed
-             *  
-             *      disable switch and color it red
-             *      
-             *      move platform to next destination
-             *      
-             *  else platform is moving
-             *  
-             *      do nothing
-             */
+            DisplayColor(); // Green
 
-            if(elevatorButtonPressed && platformNotMoving)
+            if(elevatorButtonPressed)
             {
-
-            }
-
-
-
+                platfromIsEnabled = false;
+                DisplayColor(); // Red
+                //movePlatform();
+            } 
         }
+
+        
+
+
+
     }
+
+    void checkPlatformPosition()
+    {
+        if(Vector2.Distance(transform.position, upperPos.position) < 0.5f)
+        {
+            elevatorIsUp = true;
+            elevatorIsDown = false;
+        } 
+        else if (Vector2.Distance(transform.position, downPos.position) < 0.5f)
+        {
+            elevatorIsUp = false;
+            elevatorIsDown = true;
+        }
+
+
+    }
+
+
 
     void DisplayColor()
     {
-        if (enableSwitch)
+        if (platfromIsEnabled)
         {
             elevatorRenderer.color = Color.green;
         }

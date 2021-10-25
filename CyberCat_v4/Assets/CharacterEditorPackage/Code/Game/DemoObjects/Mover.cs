@@ -16,42 +16,37 @@ public class Mover: MonoBehaviour
 
     protected float m_Time;
     protected Vector3 m_StartPosition;
+    protected bool platfromIsEnabled { get; set; }
 
     void Start()
     {
         m_StartPosition = transform.position;
+        platfromIsEnabled = true;
     }
 
     void FixedUpdate()
     {
 
-        m_Time += Time.fixedDeltaTime * m_MovementSpeed;
-        float offset = m_MoveCurve.Evaluate(m_Time) * m_MaxDistance * 2.0f - m_MaxDistance;
-        /*
-        Vector3 t_Direction;
-
-        if(m_MoveAlignedToRotation)
+        if(platfromIsEnabled)
         {
-            t_Direction = transform.rotation * m_Direction.normalized;
-        } 
-        else
-        {
-            t_Direction = m_Direction.normalized;
+            EnablePlatform();
         }
-        */
+
+    }
+
+    void EnablePlatform()
+    {
+        m_Time += Time.fixedDeltaTime * m_MovementSpeed;
+        // slowing down
+        float offset = m_MoveCurve.Evaluate(m_Time) * m_MaxDistance * 2.0f - m_MaxDistance;
         Vector3 t_Direction = m_MoveAlignedToRotation ? transform.rotation * m_Direction.normalized : m_Direction.normalized;
         transform.position = m_StartPosition + offset * t_Direction.normalized;
-        //movePlatform(t_Direction, offset);
+
     }
 
-    void movePlatform(Vector3 t_Direction, float offset)
+    void DisablePlatform()
     {
-        transform.position = m_StartPosition + offset * t_Direction.normalized;
-    }
-
-    void stopPlatform()
-    {
-
+        platfromIsEnabled = false;
     }
 
 
