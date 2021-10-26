@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 //Small class to move an object back and forth along a path. Used for
 //moving platforms in levels
 //--------------------------------------------------------------------
+
 public class Mover: MonoBehaviour
 {
     [Header("Mover")]
@@ -16,7 +17,7 @@ public class Mover: MonoBehaviour
 
     protected float m_Time;
     protected Vector3 m_StartPosition;
-    protected bool platfromIsEnabled { get; set; }
+    public bool platfromIsEnabled { get; set; }
 
     void Start()
     {
@@ -29,22 +30,21 @@ public class Mover: MonoBehaviour
 
         if(platfromIsEnabled)
         {
-            EnablePlatform();
-        }
+            m_Time += Time.fixedDeltaTime * m_MovementSpeed;
+            float offset = m_MoveCurve.Evaluate(m_Time) * m_MaxDistance * 2.0f - m_MaxDistance;
+            Vector3 t_Direction = m_MoveAlignedToRotation ? transform.rotation * m_Direction.normalized : m_Direction.normalized;
+            transform.position = m_StartPosition + offset * t_Direction.normalized;
+        } 
+
 
     }
 
-    void EnablePlatform()
+    public void EnablePlatform()
     {
-        m_Time += Time.fixedDeltaTime * m_MovementSpeed;
-        // slowing down
-        float offset = m_MoveCurve.Evaluate(m_Time) * m_MaxDistance * 2.0f - m_MaxDistance;
-        Vector3 t_Direction = m_MoveAlignedToRotation ? transform.rotation * m_Direction.normalized : m_Direction.normalized;
-        transform.position = m_StartPosition + offset * t_Direction.normalized;
-
+        platfromIsEnabled = true;
     }
 
-    void DisablePlatform()
+    public void DisablePlatform()
     {
         platfromIsEnabled = false;
     }

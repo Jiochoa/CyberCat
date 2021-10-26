@@ -7,61 +7,111 @@ using UnityEngine;
 //elevator
 //--------------------------------------------------------------------
 
-public class Elevator : Mover
+/*TODO: 
+* Bug: only works on the first go
+* Fix: it sohuld only be added once every time it reaches an end
+* 
+*/
+public class Elevator : MonoBehaviour
 {
     [Header("Elevator")]
-    Transform player;
-    Transform elevatorSwitch;
-    Transform upperPos;
-    Transform downPos;
+    [SerializeField] Mover moverObject;
+    [SerializeField] MeshRenderer platform;
+    [SerializeField] Transform player;
+    [SerializeField] Transform elevatorSwitch;
+    [SerializeField] Transform upperPos;
+    [SerializeField] Transform downPos;
     public SpriteRenderer elevatorRenderer;
 
 
     bool elevatorIsUp = false;
     bool elevatorIsDown = false;
-
-
+    bool eleLock = true;
+    private void Start()
+    {
+        downPos.position = new Vector2(downPos.position.x, downPos.position.y - 20);
+    }
 
     // Update is called once per frame
     void Update()
     {
-
-        checkPlatformPosition();
-
         bool playerCanReachSwitch = Vector2.Distance(player.position, elevatorSwitch.position) < 0.5f;
-        bool elevatorButtonPressed = Input.GetKeyDown(KeyCode.E);
-        
-
-        // Pre: player is within reach 
-        if (platfromIsEnabled && playerCanReachSwitch)
-        {
-            DisplayColor(); // Green
-
-            if(elevatorButtonPressed)
+        bool elevatorButtonPressed = Input.GetKeyDown(KeyCode.Q);
+            // Pre: player is within reach 
+        /*
+            if (platfromIsEnabled && playerCanReachSwitch)
             {
-                platfromIsEnabled = false;
-                DisplayColor(); // Red
-                //movePlatform();
-            } 
+                DisplayColor(); // Green
+                if (elevatorButtonPressed)
+                {
+                    platfromIsEnabled = false;
+                    DisplayColor(); // Red
+                    //movePlatform();
+                }
+            }
+        }
+        */
+
+        UpdatePlatformPosition();
+
+        /*TODO: 
+         * Bug: position is adding 20 more than once
+         * Fix: it sohuld only be added once every time it reaches an end
+         * 
+         * 
+         * 
+         */
+
+
+        if(elevatorIsUp && eleLock)
+        {
+            moverObject.DisablePlatform();
+            upperPos.position = new Vector2(upperPos.position.x, upperPos.position.y + 20);
+            downPos.position = new Vector2(upperPos.position.x, upperPos.position.y + 20);
+            eleLock = false;
         }
 
-        
+        if (elevatorIsDown && eleLock)
+        {
+            moverObject.DisablePlatform();
+            upperPos.position = new Vector2(upperPos.position.x, upperPos.position.y - 20);
+            downPos.position = new Vector2(upperPos.position.x, upperPos.position.y - 20);
+            eleLock = false;
+        }
+
+        if(playerCanReachSwitch && elevatorButtonPressed)
+        {
+            moverObject.EnablePlatform();
+            eleLock = true;
+        }
+
+
+       
+
 
 
 
     }
 
-    void checkPlatformPosition()
+    void UpdatePlatformPosition()
     {
-        if(Vector2.Distance(transform.position, upperPos.position) < 0.5f)
+        if(Vector2.Distance(platform.transform.position, upperPos.position) < 0.5f)
         {
             elevatorIsUp = true;
-            elevatorIsDown = false;
+            UpdateColor();
+            print("elevatorIsUp = " + elevatorIsUp);
         } 
-        else if (Vector2.Distance(transform.position, downPos.position) < 0.5f)
+        else if (Vector2.Distance(platform.transform.position, downPos.position) < 0.5f)
+        {
+            elevatorIsDown = true;
+            UpdateColor();
+            print("elevatorIsDown = " + elevatorIsDown);
+        } 
+        else
         {
             elevatorIsUp = false;
-            elevatorIsDown = true;
+            elevatorIsDown = false;
+            UpdateColor();
         }
 
 
@@ -69,9 +119,9 @@ public class Elevator : Mover
 
 
 
-    void DisplayColor()
+    void UpdateColor()
     {
-        if (platfromIsEnabled)
+        if (moverObject.platfromIsEnabled)
         {
             elevatorRenderer.color = Color.green;
         }
