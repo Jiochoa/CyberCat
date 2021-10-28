@@ -17,6 +17,11 @@ public class Mover: MonoBehaviour
 
     protected float m_Time;
     protected Vector3 m_StartPosition;
+
+    public Vector3 upperBound;
+    public Vector3 lowerBound;
+
+
     public bool platfromIsEnabled { get; set; }
 
     void Start()
@@ -54,12 +59,15 @@ public class Mover: MonoBehaviour
     void OnDrawGizmos()
     {
         Vector3 start = transform.position;
+
         if (Application.isPlaying)
         {
             start = m_StartPosition;
         }
         Gizmos.color = Color.green;
         Vector3 direction = m_Direction.normalized;
+        upperBound = start + direction * m_MaxDistance; 
+        lowerBound = start - direction * m_MaxDistance;
         Gizmos.DrawLine(start - direction * m_MaxDistance, start + direction * m_MaxDistance);
 
         Gizmos.matrix = Matrix4x4.TRS(start - direction * m_MaxDistance, transform.rotation, transform.localScale);

@@ -23,7 +23,7 @@ public class Elevator : MonoBehaviour
     [SerializeField] Transform downPos;
     public SpriteRenderer elevatorRenderer;
 
-
+    
     bool elevatorIsUp = false;
     bool elevatorIsDown = false;
     bool eleLock = true;
@@ -37,37 +37,15 @@ public class Elevator : MonoBehaviour
     {
         bool playerCanReachSwitch = Vector2.Distance(player.position, elevatorSwitch.position) < 0.5f;
         bool elevatorButtonPressed = Input.GetKeyDown(KeyCode.Q);
-            // Pre: player is within reach 
-        /*
-            if (platfromIsEnabled && playerCanReachSwitch)
-            {
-                DisplayColor(); // Green
-                if (elevatorButtonPressed)
-                {
-                    platfromIsEnabled = false;
-                    DisplayColor(); // Red
-                    //movePlatform();
-                }
-            }
-        }
-        */
 
         UpdatePlatformPosition();
-
-        /*TODO: 
-         * Bug: position is adding 20 more than once
-         * Fix: it sohuld only be added once every time it reaches an end
-         * 
-         * 
-         * 
-         */
 
 
         if(elevatorIsUp && eleLock)
         {
             moverObject.DisablePlatform();
             upperPos.position = new Vector2(upperPos.position.x, upperPos.position.y + 20);
-            downPos.position = new Vector2(upperPos.position.x, upperPos.position.y + 20);
+            downPos.position = new Vector2(downPos.position.x, downPos.position.y + 20);
             eleLock = false;
         }
 
@@ -75,14 +53,15 @@ public class Elevator : MonoBehaviour
         {
             moverObject.DisablePlatform();
             upperPos.position = new Vector2(upperPos.position.x, upperPos.position.y - 20);
-            downPos.position = new Vector2(upperPos.position.x, upperPos.position.y - 20);
+            downPos.position = new Vector2(downPos.position.x, downPos.position.y - 20);
             eleLock = false;
         }
 
-        if(playerCanReachSwitch && elevatorButtonPressed)
+        if(playerCanReachSwitch && elevatorButtonPressed && (elevatorIsUp || elevatorIsDown))
         {
             moverObject.EnablePlatform();
             eleLock = true;
+            print("player pressed button succesfully");
         }
 
 
@@ -95,14 +74,18 @@ public class Elevator : MonoBehaviour
 
     void UpdatePlatformPosition()
     {
-        if(Vector2.Distance(platform.transform.position, upperPos.position) < 0.5f)
+
+
+        if(Vector2.Distance(platform.transform.position, moverObject.upperBound.Normalize) < 0.5f)
         {
             elevatorIsUp = true;
+            elevatorIsDown = false;
             UpdateColor();
             print("elevatorIsUp = " + elevatorIsUp);
         } 
         else if (Vector2.Distance(platform.transform.position, downPos.position) < 0.5f)
         {
+            elevatorIsUp = false;
             elevatorIsDown = true;
             UpdateColor();
             print("elevatorIsDown = " + elevatorIsDown);
@@ -112,23 +95,74 @@ public class Elevator : MonoBehaviour
             elevatorIsUp = false;
             elevatorIsDown = false;
             UpdateColor();
+            print("elevator is moving");
         }
 
 
     }
-
-
 
     void UpdateColor()
     {
         if (moverObject.platfromIsEnabled)
         {
-            elevatorRenderer.color = Color.green;
+            elevatorRenderer.color = Color.red;
         }
         else
         {
-            elevatorRenderer.color = Color.red;
+            elevatorRenderer.color = Color.green ;
         }
     }
+
+    [SerializeField] Mover platform1;
+    [SerializeField] Transform player1;
+    [SerializeField] Transform elevatorSwitch1;
+    [SerializeField] Transform higherPosition1;
+    [SerializeField] Transform lowerPosition1;
+    public SpriteRenderer elevatorRenderer1;
+
+    MeshRenderer platformMesh;
+
+    void Start1()
+    {
+        platformMesh = platform1.GetComponent<MeshRenderer>();
+    }
+
+    void Update1()
+    {
+        bool playerPressedSwitch = false;
+        bool playerCanReachSwitch = false;
+        bool platformIsUp = false;
+        bool platformIsDown = false;
+
+        //moverObject.GetComponent<MeshRenderer>();
+       
+
+        if(playerCanReachSwitch && playerPressedSwitch)
+        {
+
+        }
+
+    }
+    //Check where is the platform
+    void UpdatePlatformPosition1()
+    {
+        /*  if platform is in its highest position
+         *      platformIsUp = true;    
+         *  if platfomr is in its lowest position
+         *      platformIsDown = true;
+         *  if neither
+         *      platformIsUp = false;    
+         *      platformIsDown = false;
+         */
+
+
+
+
+
+
+    }
+
+
+
 
 }
