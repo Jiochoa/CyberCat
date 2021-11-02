@@ -76,7 +76,7 @@ public class Elevator : MonoBehaviour
     {
 
 
-        if(Vector2.Distance(platform.transform.position, moverObject.upperBound.Normalize) < 0.5f)
+        if(Vector2.Distance(platform.transform.position, upperPos.position) < 0.5f)
         {
             elevatorIsUp = true;
             elevatorIsDown = false;
