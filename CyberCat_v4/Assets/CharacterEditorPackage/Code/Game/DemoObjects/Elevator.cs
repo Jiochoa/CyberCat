@@ -7,11 +7,6 @@ using UnityEngine;
 //elevator
 //--------------------------------------------------------------------
 
-/*TODO: 
-* Bug: only works on the first go
-* Fix: it sohuld only be added once every time it reaches an end
-* 
-*/
 public class Elevator : MonoBehaviour
 {
     [Header("Elevator")]
