@@ -15,90 +15,76 @@ using UnityEngine;
 public class Elevator : MonoBehaviour
 {
     [Header("Elevator")]
-    [SerializeField] Mover moverObject;
-    [SerializeField] MeshRenderer platform;
+    Mover moverObject;
     [SerializeField] Transform player;
     [SerializeField] Transform elevatorSwitch;
-    [SerializeField] Transform upperPos;
-    [SerializeField] Transform downPos;
+    [SerializeField] Transform higherPosition;
+    [SerializeField] Transform lowerPosition;
     public SpriteRenderer elevatorRenderer;
 
-    
-    bool elevatorIsUp = false;
-    bool elevatorIsDown = false;
-    bool eleLock = true;
-    private void Start()
+    MeshRenderer platform;
+    bool platformIsUp = false;
+    bool platformIsDown = false;
+    bool elevatorIsMoving = false;
+
+    bool canPressSwitch = false;
+    bool switchPressed = false;
+
+    void Start()
     {
-        downPos.position = new Vector2(downPos.position.x, downPos.position.y - 20);
+        moverObject = GetComponentInChildren<Mover>();
+        platform = moverObject.GetComponentInChildren<MeshRenderer>();
+        // offset the lower position so the elevator starts from the bottom
+        lowerPosition.position = new Vector2(lowerPosition.position.x, lowerPosition.position.y - 20);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        bool playerCanReachSwitch = Vector2.Distance(player.position, elevatorSwitch.position) < 0.5f;
-        bool elevatorButtonPressed = Input.GetKeyDown(KeyCode.Q);
-
         UpdatePlatformPosition();
+        UpdateColor();
 
-
-        if(elevatorIsUp && eleLock)
-        {
+        if (platformIsUp || platformIsDown) // not moving
+        {      
             moverObject.DisablePlatform();
-            upperPos.position = new Vector2(upperPos.position.x, upperPos.position.y + 20);
-            downPos.position = new Vector2(downPos.position.x, downPos.position.y + 20);
-            eleLock = false;
-        }
+            // platform not moving
+            if (canPressSwitch)
+            {
+                // player can reach button
 
-        if (elevatorIsDown && eleLock)
+                if (switchPressed)
+                {
+                    // player clicked button
+                    //// movePositions() v
+                    if (platformIsUp)
+                    {
+                        higherPosition.position = new Vector2(higherPosition.position.x, higherPosition.position.y + 20);
+                        lowerPosition.position = new Vector2(lowerPosition.position.x, lowerPosition.position.y + 20);
+                    } 
+                    else if(platformIsDown)
+                    {
+                        higherPosition.position = new Vector2(higherPosition.position.x, higherPosition.position.y - 20);
+                        lowerPosition.position = new Vector2(lowerPosition.position.x, lowerPosition.position.y - 20);
+                    }
+
+                    moverObject.EnablePlatform();
+
+                }
+            }
+
+        }
+        else // moving
         {
-            moverObject.DisablePlatform();
-            upperPos.position = new Vector2(upperPos.position.x, upperPos.position.y - 20);
-            downPos.position = new Vector2(downPos.position.x, downPos.position.y - 20);
-            eleLock = false;
+            Debug.Log("Platform should be moving...");
         }
-
-        if(playerCanReachSwitch && elevatorButtonPressed && (elevatorIsUp || elevatorIsDown))
-        {
-            moverObject.EnablePlatform();
-            eleLock = true;
-            print("player pressed button succesfully");
-        }
-
-
-       
-
-
-
 
     }
-
+    //Check where is the platform
     void UpdatePlatformPosition()
     {
-
-
-        if(Vector2.Distance(platform.transform.position, upperPos.position) < 0.5f)
-        {
-            elevatorIsUp = true;
-            elevatorIsDown = false;
-            UpdateColor();
-            print("elevatorIsUp = " + elevatorIsUp);
-        } 
-        else if (Vector2.Distance(platform.transform.position, downPos.position) < 0.5f)
-        {
-            elevatorIsUp = false;
-            elevatorIsDown = true;
-            UpdateColor();
-            print("elevatorIsDown = " + elevatorIsDown);
-        } 
-        else
-        {
-            elevatorIsUp = false;
-            elevatorIsDown = false;
-            UpdateColor();
-            print("elevator is moving");
-        }
-
-
+        platformIsUp = Vector2.Distance(platform.transform.position, higherPosition.position) < 0.5f;
+        platformIsDown = Vector2.Distance(platform.transform.position, lowerPosition.position) < 0.5f;
+        canPressSwitch = Vector2.Distance(player.position, elevatorSwitch.position) < 0.5f;
+        switchPressed = Input.GetKeyDown(KeyCode.Q);
     }
 
     void UpdateColor()
@@ -112,56 +98,6 @@ public class Elevator : MonoBehaviour
             elevatorRenderer.color = Color.green ;
         }
     }
-
-    [SerializeField] Mover platform1;
-    [SerializeField] Transform player1;
-    [SerializeField] Transform elevatorSwitch1;
-    [SerializeField] Transform higherPosition1;
-    [SerializeField] Transform lowerPosition1;
-    public SpriteRenderer elevatorRenderer1;
-
-    MeshRenderer platformMesh;
-
-    void Start1()
-    {
-        platformMesh = platform1.GetComponent<MeshRenderer>();
-    }
-
-    void Update1()
-    {
-        bool playerPressedSwitch = false;
-        bool playerCanReachSwitch = false;
-        bool platformIsUp = false;
-        bool platformIsDown = false;
-
-        //moverObject.GetComponent<MeshRenderer>();
-       
-
-        if(playerCanReachSwitch && playerPressedSwitch)
-        {
-
-        }
-
-    }
-    //Check where is the platform
-    void UpdatePlatformPosition1()
-    {
-        /*  if platform is in its highest position
-         *      platformIsUp = true;    
-         *  if platfomr is in its lowest position
-         *      platformIsDown = true;
-         *  if neither
-         *      platformIsUp = false;    
-         *      platformIsDown = false;
-         */
-
-
-
-
-
-
-    }
-
 
 
 
