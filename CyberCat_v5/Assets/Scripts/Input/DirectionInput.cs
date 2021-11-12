@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-
 //--------------------------------------------------------------------
 //Gets arrow key or analogue stick input from Unity's input system. Used by PlayerInput
 //--------------------------------------------------------------------
 public class DirectionInput
 {
-    // joystick
-    //Joystick movementJoystick = null;
-
     public enum Direction
     {
         Neutral,
@@ -28,7 +24,6 @@ public class DirectionInput
     //Override
     bool m_IsBeingOverridden;
     Vector2 m_OverriddenInput;
-
 
     public bool GetIsBeingOverridden()
     {
@@ -72,8 +67,7 @@ public class DirectionInput
             m_RawInput = m_OverriddenInput.normalized;
         }
         else
-        {
-            //print("Getting x and y input");
+        { 
             m_RawInput.x = Input.GetAxisRaw(m_HorizontalName);
             m_RawInput.y = Input.GetAxisRaw(m_VerticalName);
         }

@@ -16,7 +16,6 @@ public class CrouchingModule : GroundedControllerAbilityModule
     protected override void StartModuleImpl(){
         if (m_ControlledCollider != null)
         {      
-            // shrink collider
             m_ControlledCollider.SetLength(m_CrouchHeight, CapsuleResizeMethod.FromBottom);
             m_ControlledCollider.UpdateContextInfo();
         }
@@ -26,7 +25,6 @@ public class CrouchingModule : GroundedControllerAbilityModule
     protected override void EndModuleImpl(){
         if (m_ControlledCollider != null)
         {
-            // set colider back to normal
             m_ControlledCollider.SetLength(m_ControlledCollider.GetDefaultLength(), CapsuleResizeMethod.FromBottom);
             m_ControlledCollider.UpdateContextInfo();
         }
@@ -43,7 +41,6 @@ public class CrouchingModule : GroundedControllerAbilityModule
                 return;
             }
         }
-
         Vector2 currentVel = m_ControlledCollider.GetVelocity();
         Vector2 fInput = m_CharacterController.GetDirectedInputMovement() * m_CrouchAcceleration;
         fInput = m_CharacterController.ClampInputVelocity(fInput, currentVel, m_MaxCrouchSpeed);

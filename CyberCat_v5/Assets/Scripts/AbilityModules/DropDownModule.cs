@@ -2,8 +2,7 @@
 using System.Collections;
 //--------------------------------------------------------------------
 //DropDown is a movement module related to the OneWayPlatform objects.
-//This ability allows players to pass through OneWayPlatform objects
-//they are standing on by pressing crouch/holding down, and pressing jump
+//This ability allows players to pass through OneWayPlatform objects they are standing on by pressing crouch/holding down, and pressing jump
 //Optionally a jump speed is added.
 //--------------------------------------------------------------------
 public class DropDownModule : GroundedControllerAbilityModule

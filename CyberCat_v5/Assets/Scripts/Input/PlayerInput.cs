@@ -36,7 +36,6 @@ public class PlayerInput : MonoBehaviour
             {
                 jumpFound = true;
             }
-
         }
         if (!moveFound)
         {
