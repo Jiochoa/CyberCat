@@ -3,7 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/*Adds player functionality to a physics object*/
+//--------------------------------------------------------------------
+//Adds player functionality to a physics object
+//Changes:
+// - Cursor is visible
+// - Animations = off
+// - Audio = off
+// - Particles = of
+// - Graphic = off
+//--------------------------------------------------------------------
 
 [RequireComponent(typeof(RecoveryCounter))]
 
@@ -12,14 +20,15 @@ public class NewPlayer : PhysicsObject
     [Header("Reference")]
     //public AudioSource audioSource;
     //[SerializeField] private Animator animator;
-    private AnimatorFunctions animatorFunctions;
+    //private AnimatorFunctions animatorFunctions;
     public GameObject attackHit;
-    private CapsuleCollider2D capsuleCollider;
+    //private CapsuleCollider2D capsuleCollider;
+    private CapsuleCollider capsuleCollider;
     public CameraEffects cameraEffects;
     //[SerializeField] private ParticleSystem deathParticles;
     //[SerializeField] private AudioSource flameParticlesAudioSource;
     //[SerializeField] private GameObject graphic;
-    [SerializeField] private Component[] graphicSprites;
+    //[SerializeField] private Component[] graphicSprites;
     //[SerializeField] private ParticleSystem jumpParticles;
     [SerializeField] private GameObject pauseMenu;
     public RecoveryCounter recoveryCounter;
@@ -61,7 +70,7 @@ public class NewPlayer : PhysicsObject
     public int maxHealth;
     public int maxAmmo;
 
-    [Header("Sounds")]
+    /*[Header("Sounds")]
     public AudioClip deathSound;
     public AudioClip equipSound;
     public AudioClip grassSound;
@@ -75,21 +84,24 @@ public class NewPlayer : PhysicsObject
     public AudioClip[] poundActivationSounds;
     public AudioClip outOfAmmoSound;
     public AudioClip stepSound;
+    */
     [System.NonSerialized] public int whichHurtSound;
 
     void Start()
     {
         //Cursor.visible = false;
-        //SetUpCheatItems();
+        SetUpCheatItems();
         health = maxHealth;
-        animatorFunctions = GetComponent<AnimatorFunctions>();
+        //animatorFunctions = GetComponent<AnimatorFunctions>();
         origLocalScale = transform.localScale;
         recoveryCounter = GetComponent<RecoveryCounter>();
 
         //Find all sprites so we can hide them when the player dies.
-        graphicSprites = GetComponentsInChildren<SpriteRenderer>();
+        //graphicSprites = GetComponentsInChildren<SpriteRenderer>();
 
         SetGroundType();
+
+        capsuleCollider = GetComponentInParent<CapsuleCollider>();
     }
 
     private void Update()
@@ -115,11 +127,9 @@ public class NewPlayer : PhysicsObject
         if (!frozen)
         {
             move.x = Input.GetAxis("Horizontal") + launch;
-
+            
             //if (Input.GetButtonDown("Jump") && animator.GetBool("grounded") == true && !jumping)
-            if (Input.GetButtonDown("Jump")  && !jumping)
-
-
+            if (Input.GetButtonDown("Jump") && !jumping)
             {
                 //animator.SetBool("pounded", false);
                 Jump(1f);
@@ -200,7 +210,7 @@ public class NewPlayer : PhysicsObject
         switch (groundType)
         {
             case "Grass":
-                stepSound = grassSound;
+                //stepSound = grassSound;
                 break;
         }
     }
@@ -244,17 +254,19 @@ public class NewPlayer : PhysicsObject
                 health -= hitPower;
             }
 
-            GameManager.Instance.hud.HealthBarHurt();
+            ///GameManager.Instance.hud.HealthBarHurt();
         }
     }
 
     private void HurtEffect()
     {
-        //GameManager.Instance.audioSource.PlayOneShot(hurtSound);
+        ///GameManager.Instance.audioSource.PlayOneShot(hurtSound);
         StartCoroutine(FreezeFrameEffect());
-        //GameManager.Instance.audioSource.PlayOneShot(hurtSounds[whichHurtSound]);
+        ///GameManager.Instance.audioSource.PlayOneShot(hurtSounds[whichHurtSound]);
 
-        if (whichHurtSound >= hurtSounds.Length - 1)
+        //if (whichHurtSound >= hurtSounds.Length - 1)
+        bool boolTemp = false;
+        if (boolTemp)
         {
             whichHurtSound = 0;
         }
@@ -279,12 +291,12 @@ public class NewPlayer : PhysicsObject
         {
             dead = true;
             //deathParticles.Emit(10);
-            //GameManager.Instance.audioSource.PlayOneShot(deathSound);
+            ///GameManager.Instance.audioSource.PlayOneShot(deathSound);
             Hide(true);
             Time.timeScale = .6f;
             yield return new WaitForSeconds(5f);
-            GameManager.Instance.hud.animator.SetTrigger("coverScreen");
-            GameManager.Instance.hud.loadSceneName = SceneManager.GetActiveScene().name;
+            ///GameManager.Instance.hud.animator.SetTrigger("coverScreen");
+            ///GameManager.Instance.hud.loadSceneName = SceneManager.GetActiveScene().name;
             Time.timeScale = 1f;
         }
     }
@@ -326,7 +338,7 @@ public class NewPlayer : PhysicsObject
     public void PlayJumpSound()
     {
         //audioSource.pitch = (Random.Range(1f, 1f));
-        //GameManager.Instance.audioSource.PlayOneShot(jumpSound, .1f);
+        ///GameManager.Instance.audioSource.PlayOneShot(jumpSound, .1f);
     }
 
 
@@ -350,7 +362,7 @@ public class NewPlayer : PhysicsObject
 
     public void PunchEffect()
     {
-        //GameManager.Instance.audioSource.PlayOneShot(punchSound);
+        ///GameManager.Instance.audioSource.PlayOneShot(punchSound);
         cameraEffects.Shake(100, 1f);
     }
 
@@ -366,7 +378,7 @@ public class NewPlayer : PhysicsObject
                 velocity = new Vector3(velocity.x, hurtLaunchPower.y / 2, 0.0f);
             }
 
-            //GameManager.Instance.audioSource.PlayOneShot(poundActivationSounds[Random.Range(0, poundActivationSounds.Length)]);
+            ///GameManager.Instance.audioSource.PlayOneShot(poundActivationSounds[Random.Range(0, poundActivationSounds.Length)]);
             pounding = true;
             FreezeFrameEffect(.3f);
         }
@@ -379,7 +391,7 @@ public class NewPlayer : PhysicsObject
             //animator.ResetTrigger("attack");
             velocity.y = jumpPower / 1.4f;
             //animator.SetBool("pounded", true);
-            //GameManager.Instance.audioSource.PlayOneShot(poundSound);
+            ///GameManager.Instance.audioSource.PlayOneShot(poundSound);
             cameraEffects.Shake(200, 1f);
             pounding = false;
             recoveryCounter.counter = 0;
@@ -396,21 +408,28 @@ public class NewPlayer : PhysicsObject
     public void Hide(bool hide)
     {
         Freeze(hide);
-        foreach (SpriteRenderer sprite in graphicSprites)
-            sprite.gameObject.SetActive(!hide);
+        //foreach (SpriteRenderer sprite in graphicSprites)
+        bool boolTemp = false;
+        for (; boolTemp;)
+        {
+            //sprite.gameObject.SetActive(!hide);
+        }
     }
 
     public void Shoot(bool equip)
     {
         //Flamethrower ability
-        if (GameManager.Instance.inventory.ContainsKey("flamethrower"))
+
+        //if (GameManager.Instance.inventory.ContainsKey("flamethrower"))
+        bool boolTemp = false;
+        if (boolTemp)
         {
             if (equip)
             {
                 if (!shooting)
                 {
                     //animator.SetBool("shooting", true);
-                    //GameManager.Instance.audioSource.PlayOneShot(equipSound);
+                    ///GameManager.Instance.audioSource.PlayOneShot(equipSound);
                     //flameParticlesAudioSource.Play();
                     shooting = true;
                 }
@@ -421,7 +440,7 @@ public class NewPlayer : PhysicsObject
                 {
                     //animator.SetBool("shooting", false);
                     //flameParticlesAudioSource.Stop();
-                    //GameManager.Instance.audioSource.PlayOneShot(holsterSound);
+                    ///GameManager.Instance.audioSource.PlayOneShot(holsterSound);
                     shooting = false;
                 }
             }
@@ -433,7 +452,7 @@ public class NewPlayer : PhysicsObject
         //Allows us to get various items immediately after hitting play, allowing for testing. 
         for (int i = 0; i < cheatItems.Length; i++)
         {
-            GameManager.Instance.GetInventoryItem(cheatItems[i], null);
+            ///GameManager.Instance.GetInventoryItem(cheatItems[i], null);
         }
     }
 }

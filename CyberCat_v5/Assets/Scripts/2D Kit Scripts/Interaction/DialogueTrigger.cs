@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-/*Triggers a dialogue conversation, passing unique commands and information to the dialogue box and inventory system for fetch quests, etc.*/
+//--------------------------------------------------------------------
+//Triggers a dialogue conversation, passing unique commands and information to the
+//dialogue box and inventory system for fetch quests, etc.
+//Changes:
+// - change capsuleColider2D to capsuleColider
+//--------------------------------------------------------------------
 
 public class DialogueTrigger : MonoBehaviour
 {
 
-    [Header ("References")]
+    [Header("References")]
     [SerializeField] private GameObject finishTalkingActivateObject; //After completing a conversation, an object can activate. 
     [SerializeField] private Animator iconAnimator; //The E icon animator
 
@@ -17,7 +21,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private bool repeat; //Set to true if the player should be able to talk again and again to the NPC. 
     [SerializeField] private bool sleeping;
 
-    [Header ("Dialogue")]
+    [Header("Dialogue")]
     [SerializeField] private string characterName; //The character's name shown in the dialogue UI
     [SerializeField] private string dialogueStringA; //The dialogue string that occurs before the fetch quest
     [SerializeField] private string dialogueStringB; //The dialogue string that occurs after fetch quest
@@ -25,7 +29,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private AudioClip[] audioLinesB; //The audio lines that occur after the fetch quest
     [SerializeField] private AudioClip[] audioChoices; //The audio lines that occur when selecting an audio choice
 
-    [Header ("Fetch Quest")]
+    [Header("Fetch Quest")]
     [SerializeField] private GameObject deleteGameObject; //If an NPC is holding the object, and gives it to you, this object will destroy
     [SerializeField] private string getWhichItem; //The inventory item given if items is fetched
     [SerializeField] private int getCoinAmount; //Or the amount of coins given if item is fetched
