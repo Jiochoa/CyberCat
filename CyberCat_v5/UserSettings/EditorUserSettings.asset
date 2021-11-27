@@ -6,27 +6,33 @@ EditorUserSettings:
   serializedVersion: 4
   m_ConfigSettings:
     RecentlyUsedScenePath-0:
-      value: 22424703114646680e0b0227036c7b151b18342f3a2d2a7e38271427fb
-      flags: 0
-    RecentlyUsedScenePath-1:
       value: 22424703114646680e0b0227036c6c111b07142f1f2b233e2867083debf42d
       flags: 0
-    RecentlyUsedScenePath-2:
-      value: 22424703114646680e0b0227036c7b151b182b292926237e38271427fb
-      flags: 0
-    RecentlyUsedScenePath-3:
-      value: 22424703114646680e0b0227036c7b151b182b2929262362633c133af6f9
-      flags: 0
-    RecentlyUsedScenePath-4:
-      value: 22424703114646680e0b0227036c721f141e142f05263625390d183eedd3373dece278fce9332b25
-      flags: 0
-    RecentlyUsedScenePath-5:
-      value: 22424703114646680e0b0227036c6d0518191d381f2b233e280d183eedae2136ebf32f
-      flags: 0
-    RecentlyUsedScenePath-6:
+    RecentlyUsedScenePath-1:
       value: 22424703114646680e0b0227036c721f141e142f05263625391b083dece5260be1e238ecc33f32337717e1351027
       flags: 0
+    RecentlyUsedScenePath-2:
+      value: 22424703114646680e0b0227036c0d5e43333c2f212715332827187df7ee3d2cfb
+      flags: 0
+    RecentlyUsedScenePath-3:
+      value: 22424703114646680e0b0227036c7e0502182a3f22262322092c103cd1e33136e7a923e7ee2e26
+      flags: 0
+    RecentlyUsedScenePath-4:
+      value: 22424703114646680e0b0227036c7b151b182b292926237e38271427fb
+      flags: 0
+    RecentlyUsedScenePath-5:
+      value: 22424703114646680e0b0227036c7b151b182b2929262362633c133af6f9
+      flags: 0
+    RecentlyUsedScenePath-6:
+      value: 22424703114646680e0b0227036c721f141e142f05263625390d183eedd3373dece278fce9332b25
+      flags: 0
     RecentlyUsedScenePath-7:
+      value: 22424703114646680e0b0227036c6d0518191d381f2b233e280d183eedae2136ebf32f
+      flags: 0
+    RecentlyUsedScenePath-8:
+      value: 22424703114646680e0b0227036c6519061b1124291b2535232c5326ece92021
+      flags: 0
+    RecentlyUsedScenePath-9:
       value: 22424703114646680e0b0227036c73150012146a7d66333e243d04
       flags: 0
     UnityRemoteDevice:
