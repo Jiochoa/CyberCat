@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3339c2525c46f494987526bc1c1da649
+guid: 772ad72d19161634ca2c282d6b9f4e8c
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -8,8 +8,9 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
-  _jsonFile: {instanceID: 0}
-  _pixelsPerUnit: 16
+  _jsonFile: {fileID: -164016180542632921, guid: 772ad72d19161634ca2c282d6b9f4e8c,
+    type: 3}
+  _pixelsPerUnit: 8
   _atlas: {instanceID: 0}
   _customLevelPrefab: {instanceID: 0}
   _deparentInRuntime: 0
