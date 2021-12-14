@@ -14,14 +14,14 @@ public class PauseMenu : MonoBehaviour
     // Use this for initialization
     void OnEnable()
     {
-        Cursor.visible = true;
+        //Cursor.visible = true;
         GameManager.Instance.audioSource.PlayOneShot(openSound);
         Time.timeScale = 0f;
     }
 
     public void Unpause()
     {
-        Cursor.visible = false;
+        //Cursor.visible = false;
         gameObject.SetActive(false);
         GameManager.Instance.audioSource.PlayOneShot(openSound);
         Time.timeScale = 1f;

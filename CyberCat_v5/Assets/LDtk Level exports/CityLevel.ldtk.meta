@@ -8,8 +8,9 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
-  _jsonFile: {instanceID: 0}
-  _pixelsPerUnit: 16
+  _jsonFile: {fileID: -164016180542632921, guid: 5e4f56ad12d9a0041ac7a84f1e94dd08,
+    type: 3}
+  _pixelsPerUnit: 8
   _atlas: {instanceID: 0}
   _customLevelPrefab: {instanceID: 0}
   _deparentInRuntime: 0

@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-
-/*Adds player functionality to a physics object*/
+//--------------------------------------------------------------
+//Adds player functionality to a physics object
+//--------------------------------------------------------------
 
 [RequireComponent(typeof(RecoveryCounter))]
 
@@ -77,6 +79,18 @@ public class NewPlayer : PhysicsObject
     public AudioClip stepSound;
     [System.NonSerialized] public int whichHurtSound;
 
+    // new input system
+    public InputMaster controls;
+
+    private void Awake()
+    {
+
+        controls = new InputMaster();
+        //controls.Player.Movement.performed += ctx => Move(ctx.ReadValue<Vector2>());
+        //controls.Player.Movement.canceled += ctx => Move(Vector2.zero);
+        //controls.Player.Jump.started += Jump;
+
+    }
     void Start()
     {
         // Cursor.visible = false;
@@ -119,7 +133,9 @@ public class NewPlayer : PhysicsObject
             if (Input.GetButtonDown("Jump") && animator.GetBool("grounded") == true && !jumping)
             {
                 animator.SetBool("pounded", false);
+                //Jump(1f);
                 Jump(1f);
+
             }
 
             //Flip the graphic's localScale
@@ -312,6 +328,20 @@ public class NewPlayer : PhysicsObject
             jumping = true;
         }
     }
+
+    /* used in NewPlayer.cs Bouncer.cs AnimationFunction.cs
+    private void Jump(InputAction.CallbackContext context)
+    {
+        if (velocity.y != jumpPower)
+        {
+            velocity.y = jumpPower * context.ReadValue<float>(); //The jumpMultiplier allows us to use the Jump function to also launch the player from bounce platforms
+            PlayJumpSound();
+            PlayStepSound();
+            JumpEffect();
+            jumping = true;
+        }
+    }
+    */
 
     public void PlayStepSound()
     {
