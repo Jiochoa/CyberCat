@@ -13,8 +13,6 @@ ScriptedImporter:
   warnings:
   - Pixels Per Unit mismatch between map (100) and tileset 'Region_Tileset.tsx' (16)
   - Pixels Per Unit mismatch between map (100) and tileset 'Actual_Tileset.tsx' (16)
-  - Pixels Per Unit mismatch between map (100) and tileset 'Region2_Tileset.tsx'
-    (16)
   missingSortingLayers: []
   missingLayers: []
   missingTags: []

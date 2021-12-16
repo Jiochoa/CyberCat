@@ -59,6 +59,9 @@ TagManager:
   - name: Layer1
     uniqueID: 3312312327
     locked: 0
+  - name: Layer0
+    uniqueID: 616639249
+    locked: 0
   - name: Player
     uniqueID: 3769207007
     locked: 0
@@ -67,9 +70,6 @@ TagManager:
     locked: 0
   - name: Interactables
     uniqueID: 301310029
-    locked: 0
-  - name: Layer0
-    uniqueID: 616639249
     locked: 0
   - name: Layer-1
     uniqueID: 2509501325
